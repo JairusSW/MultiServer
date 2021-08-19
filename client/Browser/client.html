@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<head>
+    <script src="simplepeer.min.js"></script>
+  <script src="client.js"></script>
+</head>
+<body>
+  <button style="height: 35px; width: 50px" onclick="client.leave('Idk')">
+    Leave
+  </button>
+  <textarea
+    id="chatbox"
+    style="height: 50px; width: 400px"
+    placeholder="Type to chat"
+  ></textarea>
+  <p id="chatarea"></p>
+  <script>
+    const chatbox = document.querySelectorAll("textarea").item(0);
+    const chatarea = document.getElementById("chatarea");
+
+    chatbox.onkeypress = (key) => {
+      if (key.key === "Enter") {
+        client.sendAll(chatbox.value, {
+          event: "chat",
+        });
+        chatbox.value = "";
+      }
+    };
+    client.on("chat", (data) => {
+      chatarea.innerHTML += `<span>${data.author}:<br>${data.data}\n<br></span>`;
+    });
+  </script>
+</body>
